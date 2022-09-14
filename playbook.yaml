@@ -1,0 +1,30 @@
+  
+- name: Play1   
+  hosts: nodejs_server 
+  remote_user: ubuntu
+  become: true
+  tasks:
+  - name: Install Docker
+    apt:
+      name:
+      - docker
+      state: present
+  - name: Install Docker-compose
+    apt:
+      name:
+      - docker-compose
+      state: present
+  - name: Copy file
+    copy:
+      src: docker-compose.yml
+      dest: /home/ubuntu/
+  - name: Pull Image
+    command:
+      docker-compose pull
+  - name: Restart docker-compose
+    command:
+      docker-compose up --force-recreate --build -d
+  - name: Restart docker-compose
+    command:
+      docker image prune -f
+      
